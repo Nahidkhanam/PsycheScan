@@ -166,18 +166,13 @@ def start():
 
 @app.route("/stop")
 def stop():
-    global camera, is_recording, emotion_list
+    global camera, is_recording
 
     is_recording = False
     if camera:
         camera.release()
 
-    report, final, data = analyze_emotions(emotion_list)
-
-    return render_template("result.html",
-                           emotion=final,
-                           report=report,
-                           data=data)
+    return "Stopped"
 
 
 @app.route("/upload", methods=["POST"])
@@ -222,7 +217,16 @@ def download(filename):
     return send_file(os.path.join(REPORT_FOLDER, filename),
                      as_attachment=True)
 
+@app.route("/get_result")
+def get_result():
+    global emotion_list
 
+    report, final, data = analyze_emotions(emotion_list)
+
+    return render_template("result.html",
+                           emotion=final,
+                           report=report,
+                           data=data)
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
