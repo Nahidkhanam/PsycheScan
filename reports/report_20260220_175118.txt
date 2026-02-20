@@ -1,0 +1,11 @@
+Emotion Analysis Report
+
+Angry: 0.50%
+Disgust: 0.00%
+Fear: 0.00%
+Happy: 44.33%
+Neutral: 55.16%
+Sad: 0.00%
+Surprise: 0.00%
+
+Final Emotion: Neutral

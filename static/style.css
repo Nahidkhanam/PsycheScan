@@ -1,0 +1,32 @@
+body{
+background:linear-gradient(135deg,#667eea,#764ba2);
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+.card{
+background:white;
+padding:40px;
+border-radius:20px;
+width:420px;
+text-align:center;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+input,button{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+}
+button{
+background:#667eea;
+color:white;
+border:none;
+cursor:pointer;
+}
+button:hover{background:#5a67d8;}
+a{text-decoration:none;color:#667eea;}

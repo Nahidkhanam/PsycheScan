@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="card">
+<h2>Live Emotion Detection</h2>
+
+<img id="video" width="100%">
+
+<br><br>
+
+<button onclick="start()">Start Video</button>
+<button onclick="stop()">Stop & Generate Result</button>
+
+<br><br>
+<a href="/">Back</a>
+</div>
+
+<script>
+function start(){
+    document.getElementById("video").src = "/start";
+}
+
+function stop(){
+    window.location.href = "/stop";
+}
+</script>
+</body>
+</html>

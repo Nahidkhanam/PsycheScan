@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - Emotion Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="Choose Username" required>
+        <input type="password" name="password" placeholder="Choose Password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <br>
+    <p>Already have an account?</p>
+    <a href="{{ url_for('login') }}">Login Here</a>
+</div>
+
+</body>
+</html>
