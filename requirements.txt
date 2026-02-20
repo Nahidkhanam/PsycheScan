@@ -4,5 +4,6 @@ Flask-Login==0.6.3
 gunicorn==21.2.0
 opencv-python-headless==4.8.1.78
 numpy==1.23.5
-tensorflow==2.13.0
+tensorflow==2.15.0
+
 
