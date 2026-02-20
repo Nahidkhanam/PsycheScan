@@ -1,7 +1,7 @@
 Flask
 Flask-SQLAlchemy
 Flask-Login
-opencv-python
-tensorflow
+gunicorn
+opencv-python-headless
 numpy
-Werkzeug
+tensorflow==2.13.0
