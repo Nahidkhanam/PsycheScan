@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from datetime import datetime
 from flask import Flask, render_template, Response, request, send_file,redirect, url_for, session
-from tensorflow.keras.models import load_model
+from tensorflow import keras
 from collections import Counter
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(REPORT_FOLDER, exist_ok=True)
 
 # ---------------- LOAD MODEL ----------------
-model = load_model("cnn_first_model.h5", compile=False)
+model = keras.models.load_model("cnn_first_model.keras", compile=False)
 
 face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
@@ -259,4 +259,5 @@ def logout():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
