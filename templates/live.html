@@ -1,31 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Live Emotion Detection</title>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #111;
+            color: white;
+        }
+
+        .video-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        img {
+            width: 640px;
+            border-radius: 10px;
+            border: 4px solid #444;
+        }
+
+        .recording-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: red;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .start-btn {
+            background: green;
+            color: white;
+        }
+
+        .stop-btn {
+            background: red;
+            color: white;
+        }
+
+        .result-btn {
+            background: dodgerblue;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
-<div class="card">
-<h2>Live Emotion Detection</h2>
 
-<img id="video" width="100%">
+<h1>Live Emotion Detection</h1>
 
-<br><br>
-
-<button onclick="start()">Start Video</button>
-<button onclick="stop()">Stop & Generate Result</button>
-
-<br><br>
-<a href="/">Back</a>
+<div class="video-container">
+    <div class="recording-indicator" id="recIndicator">🔴 Recording</div>
+    <img id="videoFeed" src="">
 </div>
 
+<div class="timer" id="timer">00:00</div>
+
+<br>
+
+<button class="start-btn" onclick="startRecording()">Start Video</button>
+<button class="stop-btn" onclick="stopRecording()">Stop Video</button>
+<button class="result-btn" id="resultBtn" onclick="getResult()" style="display:none;">
+    Get Result
+</button>
+
+<br><br>
+<a href="{{ url_for('home') }}" style="color:white;">Back to Dashboard</a>
+
 <script>
-function start(){
-    document.getElementById("video").src = "/start";
+
+let seconds = 0;
+let timerInterval;
+
+function startRecording() {
+    document.getElementById("videoFeed").src = "/start";
+    document.getElementById("recIndicator").style.display = "block";
+
+    seconds = 0;
+    timerInterval = setInterval(updateTimer, 1000);
 }
 
-function stop(){
-    window.location.href = "/stop";
+function stopRecording() {
+    fetch("/stop");
+
+    document.getElementById("recIndicator").style.display = "none";
+    clearInterval(timerInterval);
+
+    document.getElementById("resultBtn").style.display = "inline-block";
 }
+
+function updateTimer() {
+    seconds++;
+    let mins = Math.floor(seconds / 60);
+    let secs = seconds % 60;
+
+    document.getElementById("timer").innerText =
+        String(mins).padStart(2,'0') + ":" +
+        String(secs).padStart(2,'0');
+}
+
+function getResult() {
+    window.location.href = "/get_result";
+}
+
 </script>
+
 </body>
 </html>
