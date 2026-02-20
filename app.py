@@ -2,11 +2,12 @@ import os
 import cv2
 import numpy as np
 from datetime import datetime
-from flask import Flask, render_template, Response, request, send_file
+from flask import Flask, render_template, Response, request, send_file,redirect, url_for, session
 from tensorflow.keras.models import load_model
 from collections import Counter
 
 app = Flask(__name__)
+app.secret_key = "psychescan_secret"
 
 # ---------------- FOLDERS ----------------
 UPLOAD_FOLDER = "uploads"
@@ -144,11 +145,33 @@ def analyze_emotions(emotions):
 # ---------------- ROUTES ----------------
 @app.route("/")
 def home():
-    return render_template("dashboard.html")
+    return render_template("home.html")
 
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        # Normally you would save user to database
+        return redirect(url_for("login"))
+    return render_template("signup.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # Normally check credentials from database
+        session["user"] = "logged_in"
+        return redirect(url_for("dashboard"))
+    return render_template("login.html")
+
+@app.route("/dashboard")
+def dashboard():
+    if "user" not in session:
+        return redirect(url_for("login"))
+    return render_template("dashboard.html")
 
 @app.route("/live")
 def live():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("live.html")
 
 
@@ -227,6 +250,12 @@ def get_result():
                            emotion=final,
                            report=report,
                            data=data)
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("home"))
+
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
