@@ -1,4 +1,6 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+from tensorflow.keras.models import load_model
 import cv2
 import numpy as np
 from datetime import datetime
@@ -17,7 +19,15 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(REPORT_FOLDER, exist_ok=True)
 
 # ---------------- LOAD MODEL ----------------
-model = keras.models.load_model("cnn_first_model.keras", compile=False)
+# model = keras.models.load_model("cnn_first_model.keras", compile=False)
+model = None
+
+def get_model():
+    global model
+    if model is None:
+        from tensorflow import keras
+        model = keras.models.load_model("cnn_first_model.keras", compile=False)
+    return model
 
 face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
@@ -53,12 +63,14 @@ def generate_frames():
 
         for (x, y, w, h) in faces:
             face = gray[y:y+h, x:x+w]
-
+        
             try:
+                model = get_model()   # 🔥 load model lazily
                 prediction = model.predict(preprocess(face), verbose=0)
                 label = classes[np.argmax(prediction)]
                 emotion_list.append(label)
-            except:
+            except Exception as e:
+                print("Prediction error:", e)
                 label = "Error"
 
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)
@@ -259,5 +271,6 @@ def logout():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
